@@ -129,17 +129,22 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
 
     <div class="stay-grid" style="margin-top:24px;">
 
+ <div class="stay-grid">
+
   <!-- 1 -->
   <a class="stay-card reveal" data-delay="0" href="sejour-alentejo.html">
     <div class="stay-card-media" style="background-image:url('assets/img/sejour-alentejo.jpg');">
       <div class="stay-card-overlay">
         <div class="stay-card-hover">
           <div class="stay-card-line">5 jours / 4 nuits</div>
-          <div class="stay-card-line stay-card-dates" 
-      data-stay-id="alentejo"
-      data-dates-target>
-    Dates à annoncer
-  </div>
+
+          <div class="stay-card-line stay-card-dates"
+               data-stay-id="alentejo"
+               data-dates-target>
+            Dates à annoncer
+          </div>
+
+          <div class="card-place" data-place-card data-stay="alentejo">Alentejo</div>
 
           <div class="stay-card-cta">
             <span class="stay-mini-btn">Plus d’infos</span>
@@ -147,6 +152,7 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
         </div>
       </div>
     </div>
+
     <div class="stay-card-title">Alentejo</div>
   </a>
 
@@ -156,17 +162,22 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
       <div class="stay-card-overlay">
         <div class="stay-card-hover">
           <div class="stay-card-line">5 jours / 4 nuits</div>
+
           <div class="stay-card-line stay-card-dates"
-     data-stay-id="taghazout"
-     data-dates-target>
-  Dates à annoncer
-</div>
+               data-stay-id="taghazout"
+               data-dates-target>
+            Dates à annoncer
+          </div>
+
+          <div class="card-place" data-place-card data-stay="taghazout">Taghazout</div>
+
           <div class="stay-card-cta">
             <span class="stay-mini-btn">Plus d’infos</span>
           </div>
         </div>
       </div>
     </div>
+
     <div class="stay-card-title">Taghazout</div>
   </a>
 
@@ -176,11 +187,14 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
       <div class="stay-card-overlay">
         <div class="stay-card-hover">
           <div class="stay-card-line">5 jours / 4 nuits</div>
+
           <div class="stay-card-line stay-card-dates"
-     data-stay-id="ile-de-re"
-     data-dates-target>
-  Dates à annoncer
-</div>
+               data-stay-id="ile-de-re"
+               data-dates-target>
+            Dates à annoncer
+          </div>
+
+          <div class="card-place" data-place-card data-stay="ile-de-re">Île de Ré</div>
 
           <div class="stay-card-cta">
             <span class="stay-mini-btn">Plus d’infos</span>
@@ -188,7 +202,8 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
         </div>
       </div>
     </div>
-    <div class="stay-card-title">Ile de Ré</div>
+
+    <div class="stay-card-title">Île de Ré</div>
   </a>
 
   <!-- 4 -->
@@ -197,11 +212,14 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
       <div class="stay-card-overlay">
         <div class="stay-card-hover">
           <div class="stay-card-line">5 jours / 4 nuits</div>
+
           <div class="stay-card-line stay-card-dates"
-     data-stay-id="queyras"
-     data-dates-target>
-  Dates à annoncer
-</div>
+               data-stay-id="queyras"
+               data-dates-target>
+            Dates à annoncer
+          </div>
+
+          <div class="card-place" data-place-card data-stay="queyras">Le Queyras</div>
 
           <div class="stay-card-cta">
             <span class="stay-mini-btn">Plus d’infos</span>
@@ -209,6 +227,7 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
         </div>
       </div>
     </div>
+
     <div class="stay-card-title">Le Queyras</div>
   </a>
 
@@ -218,11 +237,14 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
       <div class="stay-card-overlay">
         <div class="stay-card-hover">
           <div class="stay-card-line">5 jours / 4 nuits</div>
+
           <div class="stay-card-line stay-card-dates"
-     data-stay-id="sardaigne"
-     data-dates-target>
-  Dates à annoncer
-</div>
+               data-stay-id="sardaigne"
+               data-dates-target>
+            Dates à annoncer
+          </div>
+
+          <div class="card-place" data-place-card data-stay="sardaigne">Sardaigne</div>
 
           <div class="stay-card-cta">
             <span class="stay-mini-btn">Plus d’infos</span>
@@ -230,10 +252,12 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
         </div>
       </div>
     </div>
+
     <div class="stay-card-title">Sardaigne</div>
   </a>
 
 </div>
+
 </section>
 
 
@@ -245,7 +269,8 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
 
       <h2 class="reveal" data-delay="0">À propos de Rêves Nomades</h2>
 
-      <div class="about-text">
+      <!-- ✅ id + état tronqué par défaut -->
+      <div class="about-text is-collapsed" id="aboutText">
         <p class="reveal" data-delay="1">"Il y a quelques années, j’ai réalisé que beaucoup de femmes autour de moi étaient épuisées.</p>
 
         <p class="reveal" data-delay="2">
@@ -287,8 +312,15 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
 
         <p class="reveal" data-delay="10">
           Et si, en toi, quelque chose murmure « j’ai besoin de me retrouver »… alors peut-être que Rêves Nomades est ton chemin.
-          Un chemin doux, puissant, transformateur, où tu n’as qu’une seule chose à faire : te laisser porter.""
+          Un chemin doux, puissant, transformateur, où tu n’as qu’une seule chose à faire : te laisser porter."
         </p>
+      </div>
+
+      <!-- ✅ bouton voir suite / voir moins -->
+      <div class="about-actions">
+        <button class="btn tiny on-light" id="aboutToggleBtn" type="button" aria-expanded="false">
+          Voir la suite
+        </button>
       </div>
 
       <div class="about-founder reveal" data-delay="11">
@@ -302,17 +334,10 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
           <div class="about-founder-role">Fondatrice de Rêves Nomades</div>
         </div>
       </div>
-        <div class="about-text is-collapsed" id="aboutText">
-  ... ton texte ...
-</div>
-<div class="about-more">
-  <button class="btn tiny on-light" id="aboutToggle" type="button">Voir la suite</button>
-</div>
 
     </div>
   </div>
 </section>
-
 
 <!-- NEWSLETTER GUIDE -->
 <section class="newsletter on-photo">
@@ -391,14 +416,15 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
 </section>
 
 
-<!-- BOTTOM IMAGE -->
-<section class="bottom-wide on-photo">
-  <div class="bg" style="background-image:url('assets/img/bottom-wide.jpg');"></div>
-  <div class="content container">
-    <h2 class="reveal" data-delay="0">Partir pour mieux se retrouver.</h2>
-    <p class="reveal" data-delay="1">Rêves Nomades — des échappées pour ralentir, respirer, se retrouver.</p>
-  </div>
-</section>
+ <!-- BOTTOM IMAGE (full height) -->
+  <section class="bottom-wide on-photo">
+    <div class="bg" style="background-image:url('assets/img/bottom-wide.jpg');"></div>
+    <div class="content container reveal">
+      <h2>Partir pour mieux se retrouver.</h2>
+      <p>Rêves Nomades — des échappées pour ralentir, respirer, se retrouver.</p>
+    </div>
+  </section>
+
 
 
 <!-- FOOTER -->

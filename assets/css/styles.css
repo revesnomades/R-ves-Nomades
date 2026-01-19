@@ -33,9 +33,7 @@ body{
   line-height:1.75;
   letter-spacing: .01em;
 }
-h1,h2{
-  font-family:"MuseoModerno", system-ui, sans-serif;
-}
+h1,h2{ font-family:"MuseoModerno", system-ui, sans-serif; }
 h3,h4{
   font-family:"playfair display", system-ui, sans-serif;
   font-weight:500;
@@ -46,16 +44,14 @@ p{ margin: 12px 0 0; }
 b,strong{ font-weight:600; }
 a{ color:inherit; text-decoration:none; }
 img{ display:block; max-width:100%; }
-
 .container{ width:min(var(--max), 92vw); margin:0 auto; }
-
 .band{ width:100%; margin:0; }
 .band.white{ background:var(--white); }
 .band.cream{ background:var(--cream); }
-
 :target{ scroll-margin-top: calc(var(--navH) + 14px); }
+select, option{ color: var(--text) !important; }
 
-/* ---------------- Buttons (angles droits + transparent) ---------------- */
+/* ---------------- Buttons ---------------- */
 .btn{
   display:inline-flex;
   align-items:center;
@@ -71,7 +67,7 @@ img{ display:block; max-width:100%; }
   letter-spacing: .12em;
   text-transform: uppercase;
   cursor:pointer;
-  transition: background .18s ease, color .18s ease, transform .12s ease, border-color .18s ease;
+  transition: background .18s ease, color .18s ease, transform .18s ease, border-color .18s ease;
 }
 .btn:hover{
   transform: translateY(-1px);
@@ -149,34 +145,24 @@ img{ display:block; max-width:100%; }
 }
 .icon{ width:18px; height:18px; display:block; }
 
-@media (max-width: 560px){
-  .nav-inner{ height:auto; padding:10px 0; align-items:flex-start; }
-  .nav-links{ flex-wrap:wrap; justify-content:flex-end; }
-}
-
-/* ---------------- HERO (version finale : texte bas gauche) ---------------- */
+/* ---------------- HERO ---------------- */
 .hero.hero-left{
   min-height: 100vh;
   height: 100vh;
   position: relative;
   overflow: hidden;
 }
-
 .hero.hero-left .hero-bg{
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background-size: cover;
   background-position: center;
   background-repeat:no-repeat;
-  transform:none; /* image statique */
+  transform:none;
 }
-
 .hero.hero-left .hero-overlay{
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background: rgba(0,0,0,.14);
 }
-
 .hero.hero-left .hero-content{
   position:absolute;
   left: clamp(18px, 5vw, 84px);
@@ -186,59 +172,41 @@ img{ display:block; max-width:100%; }
   z-index:2;
   color: rgba(255,255,255,.92);
 }
-
 .hero.hero-left .hero-content h1{
   font-size: clamp(34px, 4.6vw, 64px);
   line-height: 1.05;
 }
-
 .hero.hero-left .hero-content p{
   margin-top: 14px;
   max-width: 60ch;
   color: rgba(255,255,255,.90);
   font-size: 15.5px;
 }
-
 .hero.hero-left .hero-content .actions{
   margin-top: 18px;
   display:flex;
   justify-content:flex-start;
 }
 
-@media (max-width: 780px){
-  .hero.hero-left .hero-content{
-    left: 18px;
-    right: 18px;
-    max-width: none;
-    bottom: 26px;
-  }
-}
-
-/* ---------------- Reveal (effet textes à l’ouverture/scroll) ---------------- */
-/* Visible par défaut si JS ne tourne pas */
-.reveal{
-  opacity: 1;
-  transform: none;
-}
-
-/* Animé seulement quand html a .js */
+/* ---------------- Reveal / cascade ---------------- */
+.reveal{ opacity:1; transform:none; }
 html.js .reveal{
   opacity: 0;
-  transform: translateY(10px);
-  transition: opacity .6s ease, transform .6s ease;
+  transform: translateY(14px);
+  transition: opacity .75s ease, transform .75s ease;
+  transition-delay: calc(var(--d, 0) * 70ms);
+  will-change: opacity, transform;
 }
 html.js .reveal.is-visible{
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ===============================
-   BANDEAU PRINCIPE — grand, texte à gauche, blanc
-================================ */
+/* ---------------- BANDEAU PRINCIPE ---------------- */
 .principle-band{
   position: relative;
-  min-height: 60vh;                 /* ✅ garde une grande hauteur */
-  display: flex;                     /* ✅ centre verticalement */
+  min-height: 60vh;
+  display: flex;
   align-items: center;
   padding: calc(var(--navH) + 40px) 0 80px;
 
@@ -246,58 +214,47 @@ html.js .reveal.is-visible{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;      /* ✅ fond fixe (desktop) */
-
-  color: #fff;                       /* ✅ texte blanc */
+  background-attachment: fixed;
+  color: #fff;
 }
-
-/* voile sombre pour la lisibilité */
 .principle-band::before{
   content:"";
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background: rgba(0,0,0,.45);
 }
-
-/* contenu au-dessus du voile */
 .principle-band .container{
   position: relative;
   z-index: 1;
 
-  text-align: right;                  /* ✅ texte à gauche */
-  max-width: 78ch;                   /* ✅ lignes longues mais contrôlées */
-  margin-right: clamp(18px, 6vw, 110px);
-  margin-left: auto;
+  /* ✅ texte à gauche */
+  text-align: left;
+  max-width: 78ch;
+  margin-left: clamp(18px, 6vw, 110px);
+  margin-right: auto;
 }
+.principle-band p{ color: rgba(255,255,255,.88); }
 
-/* texte un peu plus lisible */
-.principle-band p{
-  color: rgba(255,255,255,.88);
-}
-
-
-/* ---------------- Séjours homepage (image full height + texte à droite) ---------------- */
+/* ---------------- Séjours homepage (stay-band) ---------------- */
 .stay-band{
-  height: 100vh;
   width:100%;
   display:grid;
   grid-template-columns: 1fr 1fr;
   align-items: stretch;
+  min-height: 100vh;
 }
 .stay-band .stay-media{
-  height: 100vh;
+  min-height: 100vh;
   background-size: cover;
   background-position: center;
 }
 .stay-band .stay-copy{
-  height: 100vh;
+  min-height: 100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   padding: calc(var(--navH) + 60px) 60px 60px;
   background: var(--white);
 }
-
 .kicker{
   font-size: 12px;
   letter-spacing:.14em;
@@ -318,38 +275,26 @@ html.js .reveal.is-visible{
 .stay-band.reverse .stay-media{ order: 2; }
 .stay-band.reverse .stay-copy{ order: 1; }
 
-@media (max-width: 980px){
-  .stay-band{ height:auto; grid-template-columns: 1fr; }
-  .stay-band .stay-media{ height: 56vh; }
-  .stay-band .stay-copy{ height:auto; padding: 40px 18px 70px; }
-}
-
-/* ---------------- Newsletter (image fond + formulaire) ---------------- */
+/* ---------------- Newsletter ---------------- */
 .newsletter{
-  position:relative;
+  background: var(--white);
   min-height: 60vh;
-  display:grid;
-  place-items:center;
-  overflow:hidden;
+  display: grid;
+  place-items: center;
+  text-align: center;
 }
-.newsletter .bg{
-  position:absolute; inset:0;
-  background-size:cover;
-  background-position:center;
-}
-.newsletter::before{
-  content:"";
-  position:absolute; inset:0;
-  background: rgba(0,0,0,.36);
-}
+.newsletter::before{ display:none !important; }
+.newsletter .bg{ display:none !important; }
+
 .newsletter-inner{
-  position:relative;
-  text-align:center;
-  padding: calc(var(--navH) + 60px) 0 60px;
-  color: rgba(255,255,255,.92);
+  max-width: 760px;
+  padding: calc(var(--navH) + 40px) 20px 60px;
+  margin: 0 auto;
+  color: var(--text);
 }
 .newsletter h2{
-  font-size: clamp(28px, 3.9vw, 56px);
+  color: var(--text);
+  font-size: clamp(28px, 3vw, 48px);
   margin-bottom: 14px;
 }
 .form-stack{
@@ -362,61 +307,54 @@ html.js .reveal.is-visible{
   width:100%;
   padding: 14px 14px;
   border-radius:0;
-  border:1px solid rgba(255,255,255,.45);
-  background: rgba(255,255,255,.18);
-  color:#fff;
+  border:1px solid var(--line);
+  background: transparent;
+  color: var(--text);
   font-family: inherit;
   font-weight: 300;
 }
-.input::placeholder{ color: rgba(255,255,255,.88); }
-.form-msg{ margin-top: 10px; font-size: 12.5px; color: rgba(255,255,255,.92); }
+.input::placeholder{ color: var(--muted); }
+.form-msg{ margin-top: 10px; font-size: 12.5px; color: var(--muted); }
 
-/* ---------------- Bon cadeau (hero-like avec hero-2) ---------------- */
+/* ---------------- Gift band (beige) ---------------- */
+.gift-band,
 .gift-band.hero-like{
-  position: relative;
+  background: var(--cream) !important;
+  background-image: none !important;
+  color: var(--text) !important;
   min-height: 60vh;
   display: grid;
   place-items: center;
-  overflow: hidden;
-}
-
-/* Image de fond FIXE */
-.gift-band.hero-like .bg{
-  position: absolute;
-  inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;   /* ✅ image fixe */
-  transform: none;                /* sécurité */
-}
-
-/* voile pour la lisibilité */
-.gift-band.hero-like::before{
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,.32);
-}
-
-/* contenu */
-.gift-band.hero-like .inner{
-  position: relative;
   text-align: center;
-  padding: calc(var(--navH) + 50px) 0 50px;
-  color: rgba(255,255,255,.92);
 }
+.gift-band::before,
+.gift-band.hero-like::before{ display:none !important; }
+.gift-band .bg{ display:none !important; }
 
-.gift-band.hero-like .inner p{
-  color: rgba(255,255,255,.90);
+.gift-band .inner{
+  max-width: 760px;
+  padding: calc(var(--navH) + 40px) 20px 60px;
+  margin: 0 auto;
+  color: var(--text);
+}
+.gift-band h2{
+  font-size: clamp(28px, 3vw, 48px);
+  margin-bottom: 18px;
+}
+.gift-band p{
+  color: var(--muted);
+  margin: 0 auto 20px;
   max-width: 70ch;
-  margin: 12px auto 0;
 }
-
-.gift-band.hero-like .inner .actions{
-  margin-top: 18px;
-  display: flex;
-  justify-content: center;
+.gift-band .btn{
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text);
+}
+.gift-band .btn:hover{
+  background: #111;
+  color: #fff;
+  border-color: #111;
 }
 
 /* ---------------- Contact ---------------- */
@@ -433,7 +371,6 @@ html.js .reveal.is-visible{
   padding:16px;
   background: rgba(255,255,255,.55);
 }
-.form-col{ display:grid; gap:10px; }
 .formbox select,
 .formbox input,
 .formbox textarea{
@@ -457,10 +394,6 @@ html.js .reveal.is-visible{
   line-height: 1.8;
 }
 
-@media (max-width: 980px){
-  .contact-grid{ grid-template-columns:1fr; padding: calc(var(--navH) + 20px) 0 70px; }
-}
-
 /* ---------------- Footer ---------------- */
 .footer{ padding: 26px 0; }
 .footer-row{
@@ -476,16 +409,10 @@ html.js .reveal.is-visible{
   gap:10px;
 }
 .footer-brand img{ height:34px; width:auto; }
-.footer-title{ font-family:MuseoModerno; font-weight:500; }
 .footer-social{
   display:flex;
   align-items:center;
   gap:10px;
-}
-.footer-link{
-  font-size:12px;
-  letter-spacing:.08em;
-  text-transform:uppercase;
 }
 .legal{
   padding: 12px 0 26px;
@@ -493,19 +420,9 @@ html.js .reveal.is-visible{
   color: var(--muted);
   border-top:1px solid var(--line);
 }
-.legal-row{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
 .legal a{ text-decoration: underline; text-underline-offset: 3px; }
 
-/* ---------------- Utility ---------------- */
-select, option{ color: var(--text) !important; }
-
-/* ---------------- Pages séjour : IMAGE plein bandeau + TEXTE dessous ---------------- */
-/* (utilise les classes .sejour-hero / .sejour-hero-bg / .sejour-content) */
+/* ---------------- Pages séjour ---------------- */
 .sejour-hero{
   width:100%;
   height: 80vh;
@@ -513,8 +430,7 @@ select, option{ color: var(--text) !important; }
   position:relative;
 }
 .sejour-hero-bg{
-  position:absolute;
-  inset:0;
+  position:absolute; inset:0;
   background-size:cover;
   background-position:center;
   background-repeat:no-repeat;
@@ -524,471 +440,263 @@ select, option{ color: var(--text) !important; }
   margin: 0 auto;
   padding: calc(var(--navH) + -40px) 0 var(--space-lg);
 }
-.sejour-content h1{
-  font-size: clamp(30px, 3.4vw, 48px);
-}
+.sejour-content h1{ font-size: clamp(30px, 3.4vw, 48px); }
 .sejour-meta{ color: var(--muted); font-size: 16px; margin-top: 10px; }
 .sejour-dates{ color: var(--muted); font-size: 14px; margin-top: 6px; }
 .sejour-text p{ color: var(--muted); line-height: 1.85; }
 .sejour-count{ margin-top: 22px; font-size: 13px; color: var(--muted); }
 .sejour-count .hint{ font-size: 12px; color: var(--muted); }
-.sejour-actions{ margin-top: 26px; }
-/* Cascade reveal : délai par pas (0..9) */
-html.js .reveal{
-  transition-delay: calc(var(--d, 0) * 70ms);
-}
-/* ===============================
-   À PROPOS – TEXTE LARGE + PHOTO BAS DROITE
-================================ */
 
+/* Booking box */
+.booking-box{
+  margin-top: 34px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.55);
+  padding: 18px;
+}
+.price-line{
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* ---------------- À PROPOS ---------------- */
 .about-band{
   position: relative;
   padding: calc(var(--navH) - 40px) 0 50px;
 }
-
-/* Conteneur texte */
 .about-inner{
   position: relative;
   max-width: 100%;
   margin: 0 auto;
   text-align: center;
 }
-
-/* Titre */
 .about-inner h2{
   font-size: clamp(30px, 3.2vw, 54px);
   margin: 0 auto;
 }
-
-/* Texte : lignes plus longues = moins de hauteur */
 .about-text{
   margin: 18px auto 0;
-  max-width: 100ch;          /* ✅ lignes longues */
+  max-width: 100ch;
   font-size: 15.5px;
-  line-height: 1.6;          /* ✅ plus compact */
+  line-height: 1.6;
   color: var(--muted);
 }
+.about-text p{ margin: 8px 0 0; }
 
-.about-text p{
-  margin: 8px 0 0;           /* ✅ réduit l’espace vertical */
+/* collapse */
+.about-text.is-collapsed{
+  max-height: 320px;
+  overflow: hidden;
+  position: relative;
+}
+.about-text.is-collapsed::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; bottom:0;
+  height: 120px;
+  background: linear-gradient(to bottom, rgba(247,244,239,0), rgba(247,244,239,1));
+  pointer-events:none;
+}
+.about-actions{
+  margin-top: 14px;
+  display:flex;
+  justify-content:center;
 }
 
-/* Bloc Appoline centré sous le texte */
 .about-founder{
-  margin-top: 28px;            /* espace entre texte et photo */
+  margin-top: 28px;
   display: flex;
-  justify-content: center;     /* centre horizontalement */
+  justify-content: center;
   align-items: center;
   gap: 12px;
 }
-
-/* Image Appoline */
 .about-founder-img{
   width: 86px;
   height: 86px;
   object-fit: cover;
-  border-radius: 0;          /* angles droits */
+  border-radius: 0;
 }
-
-/* Texte Appoline */
-.about-founder-meta{
-  text-align: left;
-}
-
+.about-founder-meta{ text-align: left; }
 .about-founder-name{
   font-family: "MuseoModerno", sans-serif;
   font-weight: 500;
   font-size: 15px;
   color: var(--text);
 }
-
 .about-founder-role{
   font-size: 13px;
   color: var(--muted);
   margin-top: 2px;
 }
-
-/* Responsive */
-@media (max-width: 900px){
-  .about-founder{
-    position: static;
-    margin-top: 22px;
-    justify-content: center;
-  }
-
-  .about-founder-meta{
-    text-align: center;
-  }
-
-  .about-text{
-    max-width: 92vw;
-  }
-}
-/* ===============================
-   BANDEAU GUIDE – FOND BEIGE
-================================ */
-
-.gift-band,
-.gift-band.hero-like{
-  background: var(--cream) !important;
-  background-image: none !important;
-  color: var(--text) !important;
-
+/* ---------------- Bottom wide full height ---------------- */
+.bottom-wide{
+  position:relative;
   min-height: 60vh;
-  display: grid;
-  place-items: center;
-  text-align: center;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+}
+.bottom-wide .bg{
+  position:absolute; inset:0;
+  background-size:cover;
+  background-position:center;
+}
+.bottom-wide::before{
+  content:"";
+  position:absolute; inset:0;
+  background: rgba(0,0,0,.30);
+}
+.bottom-wide .content{
+  position:relative;
+  text-align:center;
+  padding: calc(var(--navH) + 60px) 0 60px;
+}
+.bottom-wide p{ color: rgba(255,255,255,.92); }
+
+/* =========================================================
+   GRID "PROCHAINS SEJOURS" — 5 vignettes
+   (corrigé: tailles + hover + mobile sans hover)
+========================================================= */
+
+/* wrapper (ton HTML utilise .stay-grid) */
+.stay-grid{
+  margin-top: 26px;
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
 }
 
-/* supprime tous les overlays */
-.gift-band::before,
-.gift-band.hero-like::before{
-  display: none !important;
+/* carte */
+.stay-card{
+  display:block;
+  color: inherit;
 }
 
-/* contenu centré */
-.gift-band .inner,
-.gift-band.hero-like .inner{
-  max-width: 760px;
-  padding: calc(var(--navH) + 40px) 20px 60px;
-  margin: 0 auto;
-  color: var(--text);
+/* image */
+.stay-card-media{
+  position:relative;
+  width:100%;
+  aspect-ratio: 4 / 5;   /* ✅ pas minuscule */
+  min-height: 260px;     /* ✅ empêche “tout petit” */
+  background-size:cover;
+  background-position:center;
+  overflow:hidden;
+  border: 1px solid rgba(30,31,34,.14);
+  border-radius: 0;
 }
 
-/* titre */
-.gift-band h2{
-  font-size: clamp(28px, 3vw, 48px);
-  margin-bottom: 18px;
+/* overlay + hover content */
+.stay-card-overlay{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,0);
+  transition: background .25s ease;
 }
-
-/* texte */
-.gift-band p{
-  color: var(--muted);
-  margin: 0 auto 20px;
-  max-width: 70ch;
-}
-
-/* ===============================
-   FORMULAIRE
-================================ */
-
-.gift-band .form-stack{
-  margin-top: 22px;
-}
-
-.gift-band .input{
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--text);
-}
-
-.gift-band .input::placeholder{
-  color: var(--muted);
-}
-
-/* ===============================
-   BOUTON – INVERSION
-================================ */
-
-.gift-band .btn{
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--text);
-}
-
-/* hover élégant */
-.gift-band .btn:hover{
-  background: #111;
-  color: #fff;
-  border-color: #111;
-}
-/* ===============================
-   NEWSLETTER – FOND BLANC
-================================ */
-
-.newsletter{
-  background: var(--white) !important;
-  background-image: none !important;
-  min-height: 60vh;
-
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-
-/* supprime tout voile */
-.newsletter::before{
-  display: none !important;
-}
-
-/* contenu */
-.newsletter-inner{
-  max-width: 760px;
-  padding: calc(var(--navH) + 40px) 20px 60px;
-  margin: 0 auto;
-  color: var(--text);
-}
-
-/* titre */
-.newsletter h2{
-  color: var(--text);
-  font-size: clamp(28px, 3vw, 48px);
-  margin-bottom: 14px;
-}
-
-/* texte */
-.newsletter p{
-  color: var(--muted);
-  max-width: 68ch;
-  margin: 0 auto 22px;
-}
-
-/* ===============================
-   FORMULAIRE NEWSLETTER
-================================ */
-
-.newsletter .form-stack{
-  margin-top: 20px;
-}
-
-.newsletter .input{
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--text);
-}
-
-.newsletter .input::placeholder{
-  color: var(--muted);
-}
-
-/* bouton */
-.newsletter .btn{
-  background: transparent;
-  color: var(--text);
-  border: 1px solid var(--text);
-}
-
-/* hover élégant */
-.newsletter .btn:hover{
-  background: #111;
-  color: #fff;
-  border-color: #111;
-}
-
-/* message de confirmation */
-.newsletter .form-msg{
-  color: var(--muted);
-}
-/* ===============================
-   MICRO-ANIMATIONS (reveal)
-================================ */
-
-/* état caché uniquement si JS est actif */
-html.js .reveal{
+.stay-card-hover{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding: 14px;
+  gap: 6px;
+  color: rgba(255,255,255,.94);
   opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity .75s ease,
-    transform .75s ease;
-  transition-delay: calc(var(--d, 0) * 70ms); /* cascade */
-  will-change: opacity, transform;
+  transform: translateY(6px);
+  transition: opacity .25s ease, transform .25s ease;
 }
 
-/* état visible */
-html.js .reveal.is-visible{
+.stay-card-line{
+  font-size: 12px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  line-height: 1.35;
+}
+.stay-card-dates{
+  font-size: 13px;
+  letter-spacing: .02em;
+  text-transform: none;
+  opacity: .95;
+}
+
+/* mini bouton */
+.stay-mini-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:0;
+  border:1px solid rgba(255,255,255,.85);
+  padding: 8px 10px;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(var(--glassBlur));
+  -webkit-backdrop-filter: blur(var(--glassBlur));
+  color: rgba(255,255,255,.95);
+}
+
+.stay-card-title{
+  margin-top: 10px;
+  padding-left: 12px; /* tu voulais un léger décalage à droite */
+  font-size: 13px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: rgba(30,31,34,.70);
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(30,31,34,.14);
+  background: transparent;
+}
+
+/* hover desktop */
+.stay-card:hover .stay-card-overlay{
+  background: rgba(0,0,0,.52); /* ✅ voile plus foncé */
+}
+.stay-card:hover .stay-card-hover{
   opacity: 1;
   transform: translateY(0);
 }
 
-/* micro effet “underline” discret sur liens (optionnel) */
-.link-underline{
-  position: relative;
-}
-.link-underline::after{
-  content:"";
-  position:absolute;
-  left:0; bottom:-3px;
-  width:100%;
-  height:1px;
-  background: currentColor;
-  opacity:.25;
-  transform: scaleX(0);
-  transform-origin:left;
-  transition: transform .35s ease;
-}
-.link-underline:hover::after{
-  transform: scaleX(1);
+/* place/lieu SUR l'image (si tu l'affiches) */
+.card-place{
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .92;
+  color: rgba(255,255,255,.92);
 }
 
-/* micro-hover plus doux sur les boutons */
-.btn{
-  transition: background .18s ease, color .18s ease, transform .18s ease, border-color .18s ease;
+/* responsive cards */
+@media (max-width: 1100px){
+  .stay-grid{ grid-template-columns: repeat(3, 1fr); }
+  .stay-card-media{ min-height: 240px; }
 }
-.btn:hover{
-  transform: translateY(-1px);
-}
-/* ===============================
-   MOBILE / TABLET – RESPONSIVE PACK
-   (à coller tout en bas)
-================================ */
-
-/* 1) Petits ajustements globaux */
-@media (max-width: 900px){
-  :root{
-    --space-xl: 80px;
-    --space-lg: 56px;
-    --space-md: 42px;
-    --space-sm: 20px;
-  }
-
-  body{ line-height: 1.7; }
-  .container{ width: min(var(--max), 92vw); }
-
-  /* évite les gros paddings sur mobile */
-  .band{ overflow-x: hidden; }
-
-  /* boutons un peu plus compacts */
-  .btn{ padding: 10px 14px; }
-  .btn.tiny{ padding: 8px 12px; }
-}
-
-/* 2) NAVBAR : empilement propre */
-@media (max-width: 720px){
-  .nav-inner{
-    padding: 10px 0;
-    height: auto;
-    align-items: center;
-  }
-
-  .brand span{ font-size: 14px; }
-
-  .nav-links{
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .nav-links a{
-    padding: 7px 8px;
-    font-size: 11px;
-  }
-}
-
-/* 3) HERO : texte + bouton lisibles */
 @media (max-width: 780px){
-  .hero.hero-left .hero-content{
-    left: 18px;
-    right: 18px;
-    bottom: 26px;
-    max-width: none;
+  .stay-grid{ grid-template-columns: 1fr; gap: 14px; }
+  .stay-card-media{
+    aspect-ratio: 16 / 10;
+    min-height: 220px;
   }
 
-  .hero.hero-left h1{
-    font-size: clamp(30px, 8vw, 44px);
+  /* ✅ mobile: pas de hover -> overlay + texte visibles */
+  .stay-card-overlay{ background: rgba(0,0,0,.42); }
+  .stay-card-hover{
+    opacity: 1;
+    transform: translateY(0);
   }
 
-  .hero.hero-left p{
-    font-size: 14px;
-    max-width: 48ch;
-  }
+  /* ✅ mobile: on enlève le titre sous image */
+  .stay-card-title{ display:none; }
 }
 
-/* 4) Séjours (stay-band) : passe en 1 colonne */
-@media (max-width: 980px){
-  .stay-band{
-    height: auto;
-    grid-template-columns: 1fr;
-  }
-
-  .stay-band .stay-media{
-    height: 52vh;            /* image en haut */
-    min-height: 320px;
-  }
-
-  .stay-band .stay-copy{
-    height: auto;
-    padding: 34px 18px 64px;
-  }
-
-  .sep{ margin: 12px 0 18px; }
-}
-
-/* 5) Page séjour (hero image + texte dessous) */
-@media (max-width: 900px){
-  .sejour-hero{
-    height: 56vh;
-    min-height: 320px;
-  }
-
-  .sejour-content{
-    padding: 60px 0 70px;
-  }
-
-  .sejour-content h1{
-    font-size: 34px;
-  }
-}
-
-/* 6) À propos : texte plus large + Appoline centré sous le texte */
-@media (max-width: 900px){
-  .about-text{
-    max-width: 92vw;
-    line-height: 1.62;
-  }
-
-  .about-founder{
-    position: static !important;
-    margin-top: 22px !important;
-    justify-content: center !important;
-  }
-}
-
-/* 7) Newsletter / Gift : padding mobile */
-@media (max-width: 900px){
-  .newsletter-inner,
-  .gift-band .inner{
-    padding: calc(var(--navH) + 28px) 18px 50px;
-  }
-
-  .form-stack{
-    width: min(560px, 92vw);
-  }
-}
-
-/* 8) Contact : empilement */
-@media (max-width: 980px){
-  .contact-grid{
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .formbox{ order: 1; }
-  .rightcopy{ order: 2; }
-}
-
-/* 9) Bottom-wide */
-@media (max-width: 900px){
-  .bottom-wide{
-    min-height: 52vh;
-  }
-
-  .bottom-wide .content{
-    padding: calc(var(--navH) + 30px) 18px 50px;
-  }
-}
-
-/* 10) Footer */
-@media (max-width: 700px){
-  .footer-row{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-}
-/* ===============================
+/* =========================================================
    MOBILE HAMBURGER MENU
-================================ */
-
+========================================================= */
 .hamburger{
   display: none;
   width: 44px;
@@ -1002,13 +710,11 @@ html.js .reveal.is-visible{
   cursor: pointer;
   transition: border-color .18s ease, background .18s ease, transform .12s ease;
 }
-
 .hamburger:hover{
   border-color: rgba(255,255,255,.35);
   background: rgba(255,255,255,.10);
   transform: translateY(-1px);
 }
-
 .hamburger span{
   display: block;
   height: 1px;
@@ -1017,8 +723,6 @@ html.js .reveal.is-visible{
   margin: 6px 0;
   transition: transform .22s ease, opacity .22s ease;
 }
-
-/* Drawer overlay */
 .mobile-drawer{
   position: fixed;
   inset: 0;
@@ -1030,8 +734,6 @@ html.js .reveal.is-visible{
   transition: opacity .22s ease;
   z-index: 120;
 }
-
-/* Menu panel */
 .mobile-menu{
   position: absolute;
   top: var(--navH);
@@ -1045,7 +747,6 @@ html.js .reveal.is-visible{
   transform: translateX(14px);
   transition: transform .22s ease;
 }
-
 .mobile-menu a{
   display: block;
   padding: 12px 10px;
@@ -1055,7 +756,6 @@ html.js .reveal.is-visible{
   text-transform: uppercase;
   color: var(--text);
 }
-
 .mobile-menu a:hover{
   border-color: rgba(0,0,0,.18);
   background: rgba(0,0,0,.04);
@@ -1064,428 +764,139 @@ html.js .reveal.is-visible{
   opacity: 1;
   pointer-events: auto;
 }
-
 .nav.is-menu-open .mobile-menu{
   transform: translateX(0);
 }
-
-/* Hamburger to X when open */
 .nav.is-menu-open .hamburger span:nth-child(1){
   transform: translateY(7px) rotate(45deg);
 }
-.nav.is-menu-open .hamburger span:nth-child(2){
-  opacity: 0;
-}
+.nav.is-menu-open .hamburger span:nth-child(2){ opacity: 0; }
 .nav.is-menu-open .hamburger span:nth-child(3){
   transform: translateY(-7px) rotate(-45deg);
 }
-
-/* Desktop vs mobile */
 @media (max-width: 780px){
   .nav-links-desktop{ display: none; }
   .hamburger{ display: inline-block; }
 }
-.booking-box{
-  margin-top: 34px;
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,.55);
-  padding: 18px;
-}
 
-.booking-grid{
-  margin-top: 14px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.field label{
-  display:block;
-  font-size: 12px;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-.booking-box select{
-  width:100%;
-  border-radius:0;
-  border:1px solid rgba(30,31,34,.18);
-  background: rgba(255,255,255,.85);
-  padding: 12px;
-  font-family:inherit;
-  font-weight:300;
-  color: var(--text);
-}
-
-.qty{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  border:1px solid rgba(30,31,34,.18);
-  background: rgba(255,255,255,.85);
-  padding: 8px 10px;
-}
-
-#qtyValue{
-  min-width: 18px;
-  text-align:center;
-  font-weight:500;
-}
-
-.booking-total{
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-
-@media (max-width: 760px){
-  .booking-grid{ grid-template-columns: 1fr; }
-}
-.stay-grid{
-  margin-top: 26px;
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 14px;
-}
-
-@media (max-width: 1100px){
-  .stay-grid{ grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 740px){
-  .stay-grid{ grid-template-columns: repeat(2, 1fr); }
-}
-
-.stay-card{
-  position:relative;
-  border:1px solid var(--line);
-  overflow:hidden;
-  background:#fff;
-}
-
-.stay-card .img{
-  height: 240px;
-  background-size:cover;
-  background-position:center;
-}
-
-.stay-card .info{
-  padding: 12px;
-}
-
-.stay-card .info .dest{
-  font-family:"MuseoModerno";
-  font-weight:500;
-}
-
-.stay-card .info .meta{
-  color:var(--muted);
-  font-size:13px;
-  margin-top:4px;
-}
-
-.stay-card .veil{
-  position:absolute;
-  inset:0;
-  background: rgba(0,0,0,.40);
-  opacity:0;
-  transition: opacity .22s ease;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
-  text-align:center;
-}
-
-.stay-card:hover .veil{ opacity:1; }
-
-.stay-card .veil .dates{
-  color:#fff;
-  font-size:13px;
-  line-height:1.6;
-}
-
-.stay-card .veil .dates b{
-  display:block;
-  font-family:"MuseoModerno";
-  font-weight:500;
-  margin-bottom:6px;
-  color:#fff;
-}
-/* ===============================
-   GRID PROCHAINS SÉJOURS (5 cartes)
-   hover: 2 lignes + mini bouton
-================================ */
-.stay-grid{
-  display:grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-}
-
-.stay-card{
-  display:block;
-  text-decoration:none;
-  color: inherit;
-}
-
-.stay-card-media{
-  position:relative;
-  width:100%;
-  aspect-ratio: 3 / 4;
-  background-size:cover;
-  background-position:center;
-  overflow:hidden;
-  border: 1px solid var(--line);
-  border-radius: 0;
-  transform: translateZ(0);
-}
-
-.stay-card-overlay{
-  position:absolute;
-  inset:0;
-  background: rgba(0, 0, 0, 18.);
-  transition: background .22s ease;
-  display:flex;
-  align-items:flex-end;
-  justify-content:flex-start;
-}
-
-.stay-card-hover{
-  width:100%;
-  padding: 14px;
-  opacity:0;
-  transform: translateY(10px);
-  transition: opacity .92s ease, transform .92s ease;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.stay-card-line{
-  font-size: 12px;
-  letter-spacing:.10em;
-  text-transform: uppercase;
-  line-height:1.35;
-}
-
-.stay-card-cta{
-  margin-top: 12px;
-}
-
-/* mini bouton style “RN” (angles droits + transparent) */
-.stay-mini-btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:0;
-  border:1px solid rgba(255,255,255,.9);
-  padding: 8px 12px;
-  font-size: 11px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(var(--glassBlur));
-  -webkit-backdrop-filter: blur(var(--glassBlur));
-  transition: background .18s ease, color .18s ease, transform .12s ease, border-color .18s ease;
-  color: rgba(255,255,255,.95);
-}
-
-.stay-mini-btn:hover{
-  transform: translateY(-1px);
-  background: rgba(255,255,255,.95);
-  color: #000;
-  border-color: transparent;
-}
-
-.stay-card-title{
-  margin-top: 10px;
-  font-family: "Be Vietnam Pro", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  font-weight: 300;
-  padding-left: 12px;
-  font-size: 13px;
-  letter-spacing: .10em;
-  text-transform: uppercase;
-  color: rgba(30,31,34,.70);
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(30,31,34,.14); /* cadre fin */
-  background: transparent; /* ✅ pas de fond */
-}
-
-/* Hover */
-.stay-card:hover .stay-card-overlay{
-  background: rgba(0,0,0,.48);
-}
-.stay-card:hover .stay-card-hover{
-  opacity:1;
-  transform: translateY(0);
-}
-
-/* micro interaction */
-.stay-card:hover .stay-card-media{
-  transform: translateY(-2px);
-  transition: transform .18s ease;
-}
-
-/* Responsive */
-@media (max-width: 1100px){
-  .stay-grid{ grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 780px){
-  .stay-grid{ grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 420px){
-  .stay-grid{ grid-template-columns: 1fr; }
-}
 /* =========================================================
-   MOBILE ONLY — correctifs index + compte (NE TOUCHE PAS AU DESKTOP)
-   À coller TOUT EN BAS de styles.css
+   MOBILE ONLY — ce que tu aimes sur index (texte sur image)
+   (NE TOUCHE PAS AU DESKTOP)
 ========================================================= */
-@media (max-width: 900px){
+@media (max-width: 980px){
+  .stay-band{
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .stay-band .stay-media{
+    min-height: 56vh;
+  }
+  .stay-band .stay-copy{
+    min-height: auto;
+    padding: 40px 18px 70px;
+  }
+}
 
-  /* -----------------------------
-     INDEX — Séjours: texte sur l’image (Camargue + autres stay-band)
-     (desktop inchangé)
-  ------------------------------ */
+/* ✅ MOBILE : sur index #sejours, texte SUR l'image */
+@media (max-width: 900px){
   #sejours .stay-band{
     grid-template-columns: 1fr !important;
-    height: auto !important;
+    min-height: auto !important;
     position: relative !important;
   }
-
   #sejours .stay-band .stay-media{
-    height: 72vh !important;
-    min-height: 420px !important;
+    min-height: 72vh !important;
     position: relative !important;
   }
-
   #sejours .stay-band .stay-copy{
     position: absolute !important;
     left: 0; right: 0; bottom: 0;
-    height: auto !important;
+    min-height: auto !important;
     padding: 18px 18px 22px !important;
-
     background: linear-gradient(to top, rgba(0,0,0,.62), rgba(0,0,0,0)) !important;
     color: rgba(255,255,255,.96) !important;
   }
-
   #sejours .stay-band .stay-copy .kicker,
   #sejours .stay-band .stay-copy .sub,
   #sejours .stay-band .stay-copy .missing{
     color: rgba(255,255,255,.92) !important;
   }
-
   #sejours .stay-band .stay-copy .sep{
     background: rgba(255,255,255,.48) !important;
   }
-
   #sejours .stay-band .stay-copy .btn{
     color: rgba(255,255,255,.94) !important;
     border-color: rgba(255,255,255,.70) !important;
     background: rgba(255,255,255,.08) !important;
   }
-
   #sejours .stay-band .stay-copy .btn:hover{
     background:#fff !important;
     color:#000 !important;
   }
-
-  /* si un stay-band reverse existe, on évite les inversions bizarres */
   #sejours .stay-band.reverse .stay-media{ order: 1 !important; }
   #sejours .stay-band.reverse .stay-copy{ order: 2 !important; }
+}
 
-
-  /* -----------------------------
-     INDEX — Grille 5 séjours (cards)
-     Sur mobile: pas de hover => overlay toujours visible
-     (desktop hover inchangé)
-  ------------------------------ */
-  .stay-grid .stay-card .card-overlay{
-    opacity: 1 !important;                 /* overlay toujours visible */
+/* =========================================================
+   RESPONSIVE GLOBAL
+========================================================= */
+@media (max-width: 900px){
+  :root{
+    --space-xl: 80px;
+    --space-lg: 56px;
+    --space-md: 42px;
+    --space-sm: 20px;
   }
+  body{ line-height: 1.7; }
+  .band{ overflow-x: hidden; }
+  .btn{ padding: 10px 14px; }
+  .btn.tiny{ padding: 8px 12px; }
 
-  .stay-grid .stay-card .card-info{
-    opacity: 1 !important;
-    transform: translateY(0) !important;   /* info visible */
-  }
+  .sejour-hero{ height: 56vh; min-height: 320px; }
+  .sejour-content{ padding: 60px 0 70px; }
+  .sejour-content h1{ font-size: 34px; }
 
-  .stay-grid .stay-card .mini-btn{
-    display: inline-flex !important;
-  }
+  .about-text{ max-width: 92vw; line-height: 1.62; }
+  .about-founder-meta{ text-align:center; }
+  .about-founder{ justify-content:center; }
 
-
-  /* -----------------------------
-     INDEX — À propos: texte tronqué + bouton "Voir la suite"
-     (uniquement mobile)
-  ------------------------------ */
-  .about-text.is-collapsed{
-    max-height: 260px !important;
-    overflow: hidden !important;
-    position: relative !important;
-  }
-
-  .about-text.is-collapsed::after{
-    content:"";
-    position:absolute;
-    left:0; right:0; bottom:0;
-    height: 120px;
-    background: linear-gradient(to bottom, rgba(247,244,239,0), rgba(247,244,239,1));
-    pointer-events:none;
-  }
-
-  .about-more{
-    margin-top: 14px !important;
-    display:flex !important;
-    justify-content:center !important;
-  }
-
-
-  /* -----------------------------
-     INDEX — Newsletter (guide cadeau)
-     inputs centrés, pas de débordement à droite
-     (uniquement mobile)
-  ------------------------------ */
-  .newsletter-inner.container{
-    width: min(520px, 92vw) !important;
+  .newsletter-inner,
+  .gift-band .inner{
+    padding: calc(var(--navH) + 28px) 18px 50px;
   }
   .form-stack{
-    width: 100% !important;
-    margin: 0 auto !important;
+    width: 100%;
+    margin: 0 auto;
   }
-  .form-stack .input,
-  .form-stack .btn{
-    width: 100% !important;
+}
+
+/* =========================================================
+   DESKTOP ONLY — tu voulais EXACTEMENT comme avant
+   (Camargue stay-band + Contact en 2 colonnes)
+========================================================= */
+@media (min-width: 980px){
+  /* stay-band split */
+  .stay-band{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    min-height: 100vh;
   }
-
-
-  /* -----------------------------
-     INDEX — Contact: enlever le grand vide + ordre clair
-     (uniquement mobile)
-  ------------------------------ */
-  #contact .contact-grid{
-    grid-template-columns: 1fr !important;
-    gap: 18px !important;
-    min-height: auto !important;
-    padding: calc(var(--navH) + 18px) 0 36px !important;
-    align-items: start !important;
-  }
-
-  #contact .rightcopy{
-    margin-top: 0 !important;
-  }
-
-  /* évite un padding bas énorme avant le footer */
-  #contact.band.white{
-    padding-bottom: 0 !important;
+  .stay-band .stay-media{ min-height: 100vh; }
+  .stay-band .stay-copy{
+    min-height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding: calc(var(--navH) + 60px) 60px 60px;
+    background: var(--white);
   }
 
-
-  /* -----------------------------
-     COMPTE — mettre tout en 1 colonne sur mobile
-     (il faut que ton container ait la classe .account-grid)
-  ------------------------------ */
-  .account-grid{
-    grid-template-columns: 1fr !important;
+  /* contact split */
+  .contact-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 34px;
+    align-items: center;
   }
 }

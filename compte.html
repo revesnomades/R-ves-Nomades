@@ -164,257 +164,107 @@
 
   <!-- ✅ SUPABASE AUTH + RESET + REDIRECT PANIER -->
   <script type="module">
-    import { supabase } from "./assets/js/supabaseClient.js";
+  import { supabase } from "./assets/js/supabaseClient.js";
 
-    // --- elements
-    const authBox = document.getElementById("authBox");
-    const resetBox = document.getElementById("resetBox");
-    const loggedBox = document.getElementById("loggedBox");
-    const perksBox = document.getElementById("perksBox");
-    const bookingsBox = document.getElementById("bookingsBox");
+  const emailEl = document.getElementById("email");
+  const passEl  = document.getElementById("password");
 
-    const emailEl = document.getElementById("email");
-    const passEl = document.getElementById("password");
+  const btnLogin  = document.getElementById("btnLogin");
+  const btnSignup = document.getElementById("btnSignup");
+  const btnLogout = document.getElementById("btnLogout");
+  const btnSee    = document.getElementById("btnSeeBookings");
 
-    const btnLogin = document.getElementById("btnLogin");
-    const btnSignup = document.getElementById("btnSignup");
-    const btnForgot = document.getElementById("btnForgot");
-    const btnUpdatePassword = document.getElementById("btnUpdatePassword");
+  const authBox   = document.getElementById("authBox");
+  const loggedBox = document.getElementById("loggedBox");
+  const perksBox  = document.getElementById("perksBox");
+  const bookingsBox = document.getElementById("bookingsBox");
 
-    const btnLogout = document.getElementById("btnLogout");
-    const btnSeeBookings = document.getElementById("btnSeeBookings");
+  const authMsg   = document.getElementById("authMsg");
+  const userEmail = document.getElementById("userEmail");
 
-    const authMsg = document.getElementById("authMsg");
-    const resetMsg = document.getElementById("resetMsg");
-    const newPasswordEl = document.getElementById("newPassword");
+  function setMsg(el, msg){ if(el) el.textContent = msg || ""; }
 
-    const userEmail = document.getElementById("userEmail");
-    const loggedMsg = document.getElementById("loggedMsg");
-    const bookingsList = document.getElementById("bookingsList");
+  function showLoggedOut(){
+    if(authBox) authBox.style.display = "block";
+    if(perksBox) perksBox.style.display = "block";
+    if(loggedBox) loggedBox.style.display = "none";
+    if(bookingsBox) bookingsBox.style.display = "none";
+  }
 
-    const setText = (el, t) => { if(el) el.textContent = t || ""; };
+  function showLoggedIn(user){
+    if(authBox) authBox.style.display = "none";
+    if(perksBox) perksBox.style.display = "none";
+    if(loggedBox) loggedBox.style.display = "block";
+    if(bookingsBox) bookingsBox.style.display = "block";
+    if(userEmail) userEmail.textContent = user?.email || "";
+  }
 
-    // --- redirect helpers
-    function getRedirectParam(){
-      const p = new URLSearchParams(location.search);
-      return p.get("redirect"); // ex: panier.html?stayId=...
+  // ---- init session ----
+  const { data: { session }, error: sErr } = await supabase.auth.getSession();
+  if(sErr) console.warn(sErr);
+
+  if(session?.user) showLoggedIn(session.user);
+  else showLoggedOut();
+
+  // ---- login ----
+  btnLogin?.addEventListener("click", async () => {
+    setMsg(authMsg, "");
+    const email = (emailEl?.value || "").trim();
+    const password = passEl?.value || "";
+
+    if(!email || !password){
+      setMsg(authMsg, "Merci de renseigner un email et un mot de passe.");
+      return;
     }
 
-    function goRedirectIfAny(){
-      const redirect = getRedirectParam();
-      if(redirect) window.location.href = redirect;
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if(error){
+      setMsg(authMsg, error.message);
+      return;
     }
 
-    function goPendingCartIfAny(){
-      const pendingStayId = sessionStorage.getItem("pendingStayId");
-      if(!pendingStayId) return;
+    showLoggedIn(data.user);
+    setMsg(authMsg, "");
+  });
 
-      const eventId = sessionStorage.getItem("pendingEventId") || "";
-      sessionStorage.setItem("allowCart", "1");
+  // ---- signup ----
+  btnSignup?.addEventListener("click", async () => {
+    setMsg(authMsg, "");
+    const email = (emailEl?.value || "").trim();
+    const password = passEl?.value || "";
 
-      const params = new URLSearchParams({ stayId: pendingStayId });
-      if(eventId) params.set("eventId", eventId);
-
-      // nettoyage
-      sessionStorage.removeItem("pendingStayId");
-      sessionStorage.removeItem("pendingEventId");
-      sessionStorage.removeItem("pendingQty");
-      sessionStorage.removeItem("pendingRoom");
-
-      window.location.href = `panier.html?${params.toString()}`;
+    if(!email || !password){
+      setMsg(authMsg, "Merci de renseigner un email et un mot de passe.");
+      return;
     }
 
-    // --- UI
-    function showLogged(user){
-      authBox.style.display = "none";
-      resetBox.style.display = "none";
-      perksBox.style.display = "none";
-
-      loggedBox.style.display = "block";
-      bookingsBox.style.display = "block";
-
-      userEmail.textContent = user?.email || "";
-      btnSeeBookings.style.display = "inline-flex";
-      btnLogout.style.display = "inline-flex";
-    }
-
-    function showLoggedOut(){
-      loggedBox.style.display = "none";
-      bookingsBox.style.display = "none";
-      perksBox.style.display = "block";
-
-      // si flow reset -> resetBox, sinon authBox
-      const isResetFlow = window.location.hash.includes("reset");
-      resetBox.style.display = isResetFlow ? "block" : "none";
-      authBox.style.display = isResetFlow ? "none" : "block";
-
-      setText(authMsg, "");
-      setText(resetMsg, "");
-      setText(loggedMsg, "");
-      if(bookingsList) bookingsList.textContent = "";
-    }
-
-    async function refreshBookings(){
-      if(!bookingsList) return;
-      bookingsList.textContent = "Chargement…";
-
-      const { data: sessData } = await supabase.auth.getSession();
-      const user = sessData?.session?.user;
-      if(!user){
-        bookingsList.textContent = "";
-        return;
-      }
-
-      // ⚠️ adapte les colonnes selon ta table bookings
-      const { data, error } = await supabase
-        .from("bookings")
-        .select("id, stay_id, event_id, places, room_type, created_at")
-        .eq("user_id", user.id)
-        .order("created_at", { ascending: false });
-
-      if(error){
-        bookingsList.textContent = "Les réservations apparaîtront ici prochainement.";
-        return;
-      }
-
-      if(!data || data.length === 0){
-        bookingsList.textContent = "Aucune réservation pour le moment.";
-        return;
-      }
-
-      bookingsList.innerHTML = data.map(b => `
-        <div style="border-top:1px solid var(--line); padding-top:10px; margin-top:10px;">
-          <div><b>Séjour :</b> ${b.stay_id || "—"}</div>
-          <div><b>Places :</b> ${b.places || 1}</div>
-          <div><b>Chambre :</b> ${b.room_type || "—"}</div>
-          <div style="font-size:12.5px; color:var(--muted); margin-top:4px;">
-            ${b.created_at ? new Date(b.created_at).toLocaleString("fr-FR") : ""}
-          </div>
-        </div>
-      `).join("");
-    }
-
-    async function refreshUI(){
-      const { data: sessData } = await supabase.auth.getSession();
-      const user = sessData?.session?.user;
-
-      if(user){
-        showLogged(user);
-        await refreshBookings();
-
-        // priorités : panier pending > redirect param
-        goPendingCartIfAny();
-        goRedirectIfAny();
-      }else{
-        showLoggedOut();
-      }
-    }
-
-    // --- actions
-    btnLogin?.addEventListener("click", async () => {
-      setText(authMsg, "");
-      const email = (emailEl.value || "").trim();
-      const password = passEl.value || "";
-
-      if(!email || !password){
-        setText(authMsg, "Merci de renseigner un email et un mot de passe.");
-        return;
-      }
-
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
-      if(error){
-        setText(authMsg, error.message);
-        return;
-      }
-
-      await refreshUI();
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { emailRedirectTo: `${location.origin}/compte.html` }
     });
 
-    btnSignup?.addEventListener("click", async () => {
-      setText(authMsg, "");
-      const email = (emailEl.value || "").trim();
-      const password = passEl.value || "";
+    if(error){
+      setMsg(authMsg, error.message);
+      return;
+    }
 
-      if(!email || !password){
-        setText(authMsg, "Merci de renseigner un email et un mot de passe.");
-        return;
-      }
+    setMsg(authMsg, "Inscription envoyée. Vérifiez vos emails pour confirmer votre compte.");
+  });
 
-      // si on vient du panier, on conserve le retour
-      const redirect = getRedirectParam();
-      const emailRedirectTo = redirect
-        ? `${location.origin}/${redirect}`
-        : `${location.origin}/compte.html`;
+  // ---- logout ----
+  btnLogout?.addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    showLoggedOut();
+  });
 
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { emailRedirectTo }
-      });
+  // ---- keep UI in sync ----
+  supabase.auth.onAuthStateChange((_evt, newSession) => {
+    if(newSession?.user) showLoggedIn(newSession.user);
+    else showLoggedOut();
+  });
+</script>
 
-      if(error){
-        setText(authMsg, error.message);
-        return;
-      }
-
-      setText(authMsg, "Inscription OK. Vérifiez vos emails pour confirmer votre compte (si demandé).");
-    });
-
-    btnForgot?.addEventListener("click", async () => {
-      setText(authMsg, "");
-      const email = (emailEl.value || "").trim();
-      if(!email){
-        setText(authMsg, "Entrez votre email puis cliquez sur “Mot de passe oublié ?”.");
-        return;
-      }
-
-      // important : l’URL de retour doit être autorisée dans Supabase (Redirect URLs)
-      const redirectTo = `${location.origin}/compte.html#reset`;
-
-      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
-      if(error){
-        setText(authMsg, error.message);
-        return;
-      }
-
-      setText(authMsg, "Email envoyé. Ouvrez-le et suivez le lien pour créer un nouveau mot de passe.");
-    });
-
-    btnUpdatePassword?.addEventListener("click", async () => {
-      setText(resetMsg, "");
-      const newPassword = newPasswordEl.value || "";
-      if(newPassword.length < 8){
-        setText(resetMsg, "Choisissez un mot de passe d’au moins 8 caractères.");
-        return;
-      }
-
-      const { error } = await supabase.auth.updateUser({ password: newPassword });
-      if(error){
-        setText(resetMsg, error.message);
-        return;
-      }
-
-      setText(resetMsg, "Mot de passe mis à jour. Vous êtes connecté(e).");
-      await refreshUI();
-    });
-
-    btnLogout?.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      await refreshUI();
-    });
-
-    btnSeeBookings?.addEventListener("click", async () => {
-      await refreshBookings();
-      setText(loggedMsg, "Réservations mises à jour.");
-      setTimeout(() => setText(loggedMsg, ""), 1800);
-    });
-
-    // live updates
-    supabase.auth.onAuthStateChange(() => refreshUI());
-
-    // init
-    await refreshUI();
-  </script>
 
 </body>
 </html>

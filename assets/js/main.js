@@ -139,4 +139,29 @@ document.documentElement.classList.add("js");
     btn.textContent = collapsed ? "Voir la suite" : "Réduire";
   });
 })();
+// À PROPOS — Voir la suite / Voir moins
+(() => {
+  const text = document.getElementById("aboutText");
+  const btn  = document.getElementById("aboutToggleBtn");
+  if(!text || !btn) return;
+
+  function sync(){
+    const collapsed = text.classList.contains("is-collapsed");
+    btn.textContent = collapsed ? "Voir la suite" : "Voir moins";
+    btn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+  }
+
+  btn.addEventListener("click", () => {
+    text.classList.toggle("is-collapsed");
+    sync();
+
+    // option : quand on replie, on remonte légèrement au début du texte
+    if(text.classList.contains("is-collapsed")){
+      const y = text.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  });
+
+  sync();
+})();
 
