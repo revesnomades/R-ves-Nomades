@@ -531,6 +531,65 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
   import { hydrateIndexDates } from "./assets/js/stayDates.js";
   hydrateIndexDates();
 </script>
+<script type="module">
+  import { supabase } from "./assets/js/supabaseClient.js";
+
+  const form = document.getElementById("newsletterForm");
+  const msg  = document.getElementById("newsletterMsg");
+
+  function setMsg(t){
+    if(!msg) return;
+    msg.textContent = t || "";
+  }
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    setMsg("");
+
+    const fd = new FormData(form);
+    const name  = String(fd.get("name") || "").trim();
+    const email = String(fd.get("email") || "").trim();
+
+    if(!name || !email){
+      setMsg("Merci de renseigner votre nom et votre email.");
+      return;
+    }
+
+    try {
+      // 1) Enregistrer dans Supabase (table newsletter)
+      const { error: dbError } = await supabase
+        .from("newsletter")
+        .insert({ name, email });
+
+      // Si déjà présent, on ne bloque pas (selon ta contrainte unique)
+      // Tu peux commenter ce bloc si tu veux forcer l'erreur.
+      if(dbError && !String(dbError.message || "").toLowerCase().includes("duplicate")){
+        throw dbError;
+      }
+
+      // 2) Ajouter dans Brevo via Edge Function (liste #9)
+      // Remplace TON-PROJET par ton vrai subdomain supabase
+      const res = await fetch("https://qxrxwgrgjvesevjkjmry.supabase.co/functions/v1/Brevo-newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, name })
+      });
+
+      if(!res.ok){
+        // On ne bloque pas l'utilisateur si Brevo a un souci,
+        // mais on affiche un message propre.
+        console.warn("Brevo error:", await res.text());
+      }
+
+      setMsg("Merci ! Ton guide arrive par email dans quelques instants ✨");
+      form.reset();
+
+    } catch (err) {
+      console.error(err);
+      setMsg("Oups… impossible d’enregistrer pour le moment. Réessaie dans un instant.");
+    }
+  });
+</script>
 
 </body>
 </html>

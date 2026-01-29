@@ -1014,3 +1014,30 @@ html.js .reveal.is-visible{
     order: 2;
   }
 }
+/* Desktop: fond fixe OK */
+.principle-band{
+  background-attachment: fixed;
+}
+
+/* Mobile: iOS/Android n’aiment pas background-attachment: fixed */
+@media (max-width: 900px){
+  .principle-band{
+    background-attachment: fixed; /* évite bug/no-image */
+    background-position: center;
+    min-height: 62vh;              /* garde un beau bandeau */
+  }
+
+  /* voile moins sombre sur mobile */
+  .principle-band::before{
+    background: rgba(0,0,0,.25);
+  }
+
+  /* texte bien lisible */
+  .principle-band .container{
+    text-align: left;
+    margin: 0 auto;
+    max-width: 86vw;
+  }
+}
+
+
