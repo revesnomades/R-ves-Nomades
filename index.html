@@ -499,29 +499,33 @@ form?.addEventListener("submit", async (e) => {
   }
 
   try {
-    // ✅ insert compatible avec ta contrainte NOT NULL sur newsletter.name
+    // ✅ UPSERT : si email existe → update du prénom, sinon insert
     const { error } = await supabase
       .from("newsletter")
-      .insert([{ email, name: firstname, firstname }]);
-
-    // Déjà inscrit (si contrainte unique sur email)
-    if (error && error.code === "23505") {
-      show(`💌 Vous êtes déjà inscrit(e).<br>
-        <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
-          Télécharger le guide
-        </a>`);
-      return;
-    }
+      .upsert(
+        { email, name: firstname, firstname },
+        { onConflict: "email" }
+      );
 
     if (error) throw error;
 
-    // ✅ Optionnel : appeler ta Edge Function Brevo (si elle marche et CORS ok)
-    // await fetch("https://qxrxwgrgjvesevjkjmry.supabase.co/functions/v1/Brevo-newsletter", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ email, firstname })
-    // });
+    // ✅ Brevo (edge function) — nom exact : brevo-newsletter (minuscules)
+    const res = await fetch(
+      "https://qxrxwgrgjvesevjkjmry.supabase.co/functions/v1/brevo-newsletter",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, firstname }),
+      }
+    );
 
+    // si Brevo renvoie "already exists", pas grave (updateEnabled gère déjà)
+    if(!res.ok){
+      console.warn("Brevo error:", await res.text());
+    }
+
+    // ✅ Message final : comme c'est un upsert, on ne sait pas si c'était déjà inscrit.
+    // Donc on affiche un message positif + lien direct.
     show(`🌿 Merci ${firstname}, votre guide est prêt !<br>
       <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
         Télécharger le guide
@@ -535,36 +539,3 @@ form?.addEventListener("submit", async (e) => {
   }
 });
 </script>
-
-
-      if (error) throw error;
-
-      // 2) Brevo via Edge Function
-      // ⚠️ nom EXACT : brevo-newsletter (minuscules)
-      const res = await fetch("https://qxrxwgrgjvesevjkjmry.supabase.co/functions/v1/brevo-newsletter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, firstname })
-      });
-
-      if(!res.ok){
-        console.warn("Brevo error:", await res.text());
-        // on ne bloque pas, mais on peut informer
-      }
-
-      show(`🌿 Merci ${firstname}, votre guide est prêt !<br>
-        <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
-          Télécharger le guide
-        </a>`);
-
-      form.reset();
-
-    } catch (err) {
-      console.error(err);
-      show("Oups… impossible d’enregistrer pour le moment. Réessaie dans un instant.");
-    }
-  });
-</script>
-
-</body>
-</html>
