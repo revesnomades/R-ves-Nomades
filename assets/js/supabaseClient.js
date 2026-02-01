@@ -1,6 +1,16 @@
-import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+// assets/js/supabaseClient.js
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-export const SUPABASE_URL = "https://qxrxwgrgjvesevjkjmry.supabase.co";
-export const SUPABASE_ANON_KEY = "sb_publishable_oWFV8tUaYN0UdERhCqh13w_PIMegdiw";
+const SUPABASE_URL = "https://qxrxwgrgjvesevjkjmry.supabase.co";
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// ⚠️ Mets ici ta clé ANON publique (Supabase > Settings > API > anon public)
+// Elle commence souvent par "eyJ..."
+const SUPABASE_ANON_KEY = "COLLE_ICI_TA_CLE_ANON";
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true
+  }
+});
