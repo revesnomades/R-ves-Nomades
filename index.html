@@ -514,15 +514,11 @@ form?.addEventListener("submit", async (e) => {
 
     if (data.status === "already") {
       show(`💌 Vous êtes déjà inscrit(e).<br>
-        <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
-          Télécharger le guide
         </a>`);
       return;
     }
 
-    show(`🌿 Merci ${firstname}, votre guide est prêt !<br>
-      <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
-        Télécharger le guide
+    show(`🌿 Merci ${firstname}, votre guide arrive par email !<br>
       </a>`);
 
     form.reset();
