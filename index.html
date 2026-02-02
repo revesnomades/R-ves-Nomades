@@ -474,7 +474,11 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
 </script>
 
 <!-- ✅ NEWSLETTER (Supabase + Brevo + déjà inscrit) -->
-<script type="module">
+import { supabase } from "./assets/js/supabaseClient.js";
+
+const SUPABASE_URL = "https://qxrxwgrgjvesevjkjmry.supabase.co";
+const SUPABASE_ANON_KEY = "TON_ANON_KEY_ICI"; // (la même que supabaseClient.js)
+
 const form = document.getElementById("newsletterForm");
 const msg  = document.getElementById("newsletterMsg");
 
@@ -494,27 +498,40 @@ form?.addEventListener("submit", async (e) => {
   }
 
   try {
-    const res = await fetch("https://qxrxwgrgjvesevjkjmry.supabase.co/functions/v1/newsletter-signup", {
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/newsletter-signup`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+      },
       body: JSON.stringify({ firstname, email }),
     });
 
-    const data = await res.json().catch(()=> ({}));
+    const data = await res.json().catch(() => ({}));
 
     if(!res.ok){
       console.warn("newsletter-signup error:", data);
-      throw new Error("Request failed");
-    }
-
-    const guideLink = `<a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;text-underline-offset:3px;">Télécharger le guide</a>`;
-
-    if(data.status === "already"){
-      show(`💌 Vous êtes déjà inscrit(e), ${firstname}.<br>${guideLink}`);
+      // Message propre
+      show("Oups… impossible d’enregistrer pour le moment. Réessaie dans un instant.");
       return;
     }
 
-    show(`🌿 Merci ${firstname}, votre guide est prêt !<br>${guideLink}`);
+    // ✅ cas déjà inscrit
+    if(data.status === "already_subscribed"){
+      show(`💌 Vous êtes déjà inscrit(e).<br>
+        <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
+          Télécharger le guide
+        </a>`);
+      return;
+    }
+
+    // ✅ succès
+    show(`🌿 Merci ${firstname}, votre guide est prêt !<br>
+      <a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;">
+        Télécharger le guide
+      </a>`);
+
     form.reset();
 
   } catch (err) {
@@ -522,5 +539,5 @@ form?.addEventListener("submit", async (e) => {
     show("Oups… impossible d’enregistrer pour le moment. Réessaie dans un instant.");
   }
 });
-</script>
+
 
