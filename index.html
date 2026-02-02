@@ -475,12 +475,10 @@ Chaque séjour offre un temps pour soi, une pause essentielle pour retrouver én
 
 <!-- ✅ NEWSLETTER (Supabase + Brevo + déjà inscrit) -->
 <script type="module">
-import { SUPABASE_ANON_KEY } from "./assets/js/supabaseClient.js";
-
 const form = document.getElementById("newsletterForm");
 const msg  = document.getElementById("newsletterMsg");
 
-function show(html){ if(msg) msg.innerHTML = html || ""; }
+function show(html){ msg.innerHTML = html || ""; }
 
 form?.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -498,33 +496,31 @@ form?.addEventListener("submit", async (e) => {
   try {
     const res = await fetch("https://qxrxwgrgjvesevjkjmry.supabase.co/functions/v1/newsletter-signup", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_ANON_KEY,
-        "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-      body: JSON.stringify({ email, firstname }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ firstname, email }),
     });
 
-    const data = await res.json().catch(() => ({}));
+    const data = await res.json().catch(()=> ({}));
+
     if(!res.ok){
       console.warn("newsletter-signup error:", data);
       throw new Error("Request failed");
     }
 
-    if (data.status === "already") {
-      show(`💌 Vous êtes déjà inscrit(e).<br>
-        </a>`);
+    const guideLink = `<a href="assets/pdf/guide.pdf" target="_blank" style="text-decoration:underline;text-underline-offset:3px;">Télécharger le guide</a>`;
+
+    if(data.status === "already"){
+      show(`💌 Vous êtes déjà inscrit(e), ${firstname}.<br>${guideLink}`);
       return;
     }
 
-    show(`🌿 Merci ${firstname}, votre guide arrive par email !<br>
-      </a>`);
-
+    show(`🌿 Merci ${firstname}, votre guide est prêt !<br>${guideLink}`);
     form.reset();
+
   } catch (err) {
     console.error(err);
     show("Oups… impossible d’enregistrer pour le moment. Réessaie dans un instant.");
   }
 });
 </script>
+
