@@ -1,26 +1,187 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Site en maintenance</title>
-  <meta name="robots" content="noindex">
+  <meta charset="utf-8" />
+  <title>Maintenance — Rêves Nomades</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #0f172a;
-      color: white;
-      text-align: center;
+    :root{
+      --cream:#f7f4ef;
+      --white:#ffffff;
+      --text:#1e1f22;
+      --muted:#6c7078;
+      --line:rgba(30,31,34,.14);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--cream);
+      color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
+    .wrap{
+      width:min(880px, 92vw);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.70);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .top{
+      display:flex;
+      gap:18px;
+      align-items:center;
+      padding:22px 22px 12px;
+    }
+    .logo{
+      height:44px;
+      width:auto;
+      display:block;
+    }
+    .brand{
+      font-weight:600;
+      letter-spacing:.02em;
+      font-size:14px;
+      text-transform:uppercase;
+      color:rgba(30,31,34,.80);
+    }
+    .hero{
+      padding:10px 22px 22px;
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:18px;
+      align-items:center;
+    }
+    h1{
+      margin:0;
+      font-size:28px;
+      line-height:1.15;
+      letter-spacing:-.01em;
+    }
+    p{
+      margin:12px 0 0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:15px;
+    }
+    .box{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.75);
+      padding:16px;
+    }
+    .kicker{
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+      margin:0 0 10px;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:0;
+      border:1px solid var(--text);
+      background:var(--text);
+      color:#fff;
+      padding:12px 16px;
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      text-decoration:none;
+      margin-top:14px;
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--text);
+    }
+    .row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:10px;
+    }
+    .links{
+      padding:18px 22px 22px;
+      border-top:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .links a{
+      color:inherit;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:10px;
+      line-height:1.6;
+    }
+    @media (max-width: 860px){
+      .hero{ grid-template-columns:1fr; }
     }
   </style>
 </head>
 <body>
-  <div>
-    <h1>🚧 Site en maintenance</h1>
-    <p>Nous revenons très bientôt.</p>
-  </div>
+  <main class="wrap" role="main" aria-label="Maintenance Rêves Nomades">
+
+    <div class="top">
+      <!-- ✅ Mets ton vrai logo (lien direct) -->
+      <img class="logo" src="https://www.revesnomades.com/assets/img/logo-reves-nomades.png" alt="Rêves Nomades" />
+      <div>
+        <div class="brand">Rêves Nomades</div>
+        <div class="small">Partir pour mieux se retrouver.</div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div>
+        <h1>Le site est en maintenance 🌿</h1>
+        <p>
+          Nous préparons une nouvelle expérience plus fluide et plus inspirante.
+          Le site revient très vite.
+        </p>
+        <p class="small">
+          Merci pour votre patience. En attendant, vous pouvez nous écrire ou nous suivre sur Instagram.
+        </p>
+
+        <div class="row">
+          <!-- ✅ Remplace par ton IG/FB -->
+          <a class="btn" href="https://instagram.com/TON_COMPTE" target="_blank" rel="noopener">Instagram</a>
+          <a class="btn secondary" href="mailto:contact@revesnomades.com">Nous écrire</a>
+        </div>
+      </div>
+
+      <aside class="box">
+        <div class="kicker">Infos pratiques</div>
+        <div class="small">
+          <b>Contact :</b> contact@revesnomades.com<br/>
+          <b>Horaires :</b> réponse sous 24–48h
+        </div>
+
+        <div class="kicker" style="margin-top:16px;">Déjà inscrite ?</div>
+        <div class="small">
+          Si vous aviez demandé le guide, pensez à vérifier vos spams.
+        </div>
+      </aside>
+    </section>
+
+    <footer class="links">
+      <div>© 2026 Rêves Nomades</div>
+      <div></div>
+        <a href="https://facebook.com/TA_PAGE" target="_blank" rel="noopener">Facebook</a>
+      </div>
+    </footer>
+  </main>
 </body>
 </html>
