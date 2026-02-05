@@ -43,6 +43,21 @@
   });
 
   /* ===============================
+     2b) Hash au chargement (offset nav)
+  ================================ */
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      const navH =
+        parseInt(
+          getComputedStyle(document.documentElement).getPropertyValue("--navH")
+        ) || 66;
+      const y = target.getBoundingClientRect().top + window.scrollY - (navH + 14);
+      window.scrollTo({ top: y });
+    }
+  }
+
+  /* ===============================
      3) Reveal animation au scroll
   ================================ */
   const revealEls = Array.from(document.querySelectorAll(".reveal"));
@@ -141,6 +156,43 @@
 
   if (isIOS) {
     const fixedBands = Array.from(document.querySelectorAll(".fixed-bg"));
+    const layers = [];
+
+    for (const band of fixedBands) {
+      const computed = getComputedStyle(band);
+      const bgImage = computed.backgroundImage;
+      if (!bgImage || bgImage === "none") continue;
+
+      const layer = document.createElement("div");
+      layer.className = "fixed-bg-layer";
+      layer.style.backgroundImage = bgImage;
+      band.style.backgroundImage = "none";
+      band.prepend(layer);
+      layers.push({ band, layer });
+    }
+
+    if (layers.length) {
+      let ticking = false;
+
+      const updateFixedBg = () => {
+        ticking = false;
+        for (const { band, layer } of layers) {
+          const top = band.getBoundingClientRect().top + window.scrollY;
+          const offset = Math.round(window.scrollY - top);
+          layer.style.transform = `translate3d(0, ${offset}px, 0)`;
+        }
+      };
+
+      const onScroll = () => {
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(updateFixedBg);
+        }
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+
     if (fixedBands.length) {
       const updateFixedBg = () => {
         for (const band of fixedBands) {
